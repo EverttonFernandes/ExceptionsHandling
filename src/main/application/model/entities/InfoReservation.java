@@ -20,7 +20,7 @@ public class InfoReservation {
         return sdf;
     }
 
-    public void closeScanner(){
+    public void closeScanner() {
         this.scanner.close();
     }
 }

@@ -1,8 +1,5 @@
 package model.entities;
 
-import model.exceptions.DomainException;
-
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -29,11 +26,19 @@ public class Reservation {
         return checkIn;
     }
 
+    public void setCheckIn(Date checkIn) {
+        this.checkIn = checkIn;
+    }
+
     public Date getCheckOut() {
         return checkOut;
     }
 
-    public long durationInDays() { // Classe service responsavel pelas regras de negóciios
+    public void setCheckOut(Date checkOut) {
+        this.checkOut = checkOut;
+    }
+
+    public long durationInDays() {
         long differenceInMilliseconds = checkOut.getTime() - checkIn.getTime();
         return TimeUnit.DAYS.convert(differenceInMilliseconds, TimeUnit.MILLISECONDS);
     }

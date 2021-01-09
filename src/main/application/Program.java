@@ -1,14 +1,13 @@
 import model.entities.InfoReservation;
 import model.entities.Reservation;
 import model.exceptions.DomainException;
-import service.ReservationServiceImpl;
+import service.impl.ReservationServiceImpl;
+
 import java.text.ParseException;
 import java.util.Date;
 
 public class Program {
 
-    private static InfoReservation infoReservation;
-    private static ReservationServiceImpl service;
     private static Reservation reservation;
     private static Date checkIn;
     private static Date checkOut;
@@ -17,13 +16,7 @@ public class Program {
     public static void main(String[] args) {
 
         try {
-            saveReservation();
-            service.validateDatesReservation(checkIn, checkOut);
-            service.informationsReserve(reservation);
-
-            updateReservation();
-            service.informationsReserve(reservation);
-
+            inputsAndOutputsOfReservation();
         } catch (ParseException parseException) {
             System.out.println("Invalid date format");
         } catch (DomainException exception) {
@@ -31,30 +24,38 @@ public class Program {
         } catch (RuntimeException runtimeException) {
             System.out.println("Unexpected error");
         }
-        //infoReservation.closeScanner();
+        new InfoReservation().closeScanner();
+    }
+
+    private static void inputsAndOutputsOfReservation() throws ParseException {
+        saveReservation();
+        ReservationServiceImpl.informationsReserve(reservation);
+
+        updateReservation(reservation);
+        ReservationServiceImpl.informationsReserve(reservation);
     }
 
     private static void saveReservation() throws ParseException {
         System.out.println("Room number: ");
-        roomNumber = infoReservation.getScanner().nextInt();
+        roomNumber = new InfoReservation().getScanner().nextInt();
         System.out.println("Check-in date (dd/MM/yyy): ");
-        checkIn = infoReservation.getSdf().parse(infoReservation.getScanner().next());
+        checkIn = new InfoReservation().getSdf().parse(new InfoReservation().getScanner().next());
         System.out.println("Check-Out date (dd/MM/yyy): ");
-        checkOut = infoReservation.getSdf().parse(infoReservation.getScanner().next());
+        checkOut = new InfoReservation().getSdf().parse(new InfoReservation().getScanner().next());
 
-        service.saveReservation(roomNumber, checkIn, checkOut);
+        reservation = ReservationServiceImpl.saveReservation(roomNumber, checkIn, checkOut);
     }
 
-    private static void updateReservation() throws ParseException {
+    private static void updateReservation(Reservation reservation) throws ParseException {
         System.out.println();
         System.out.println("Enter data to update the reservation");
 
         System.out.println("Check-in date (dd/MM/yyy): ");
-        checkIn = infoReservation.getSdf().parse(infoReservation.getScanner().next());
+        checkIn = new InfoReservation().getSdf().parse(new InfoReservation().getScanner().next());
         System.out.println("Check-Out date (dd/MM/yyy): ");
-        checkOut = infoReservation.getSdf().parse(infoReservation.getScanner().next());
+        checkOut = new InfoReservation().getSdf().parse(new InfoReservation().getScanner().next());
 
-        service.updateDates(checkIn, checkOut);
+        ReservationServiceImpl.updateDates(checkIn, checkOut, reservation);
     }
 
 }
